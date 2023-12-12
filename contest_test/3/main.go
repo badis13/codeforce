@@ -33,48 +33,26 @@ func main() {
 }
 
 func getSubslice(k int, nums []int) int {
-	sumZero := 0
-	sum := 0
-	result := 0
-	l := 0
-	r := l + 1
+	var l, r, sum, zeroCount, result int
 
-	for r <= len(nums) {
-		cur := nums[l:r]
-		if cur[r-l-1] == 0 {
-			sumZero++
-			if sumZero > 1 {
-				l++
-				r = l + 1
-				sum = 0
-				sumZero = 0
-				continue
-			}
+	for r < len(nums) {
 
+		if nums[r] == 0 {
+			zeroCount++
 		}
-		sum += cur[r-l-1]
-		if sum <= k {
-			result++
-			r++
-			if r > len(nums) && len(cur) > 1 {
-				r--
-				l++
-				r = l + 1
-				sum = 0
-				sumZero = 0
-				continue
-			}
 
-			if sumZero < 2 {
-				continue
-			}
+		sum += nums[r]
 
+		for sum > k || zeroCount > 1 {
+			if nums[l] == 0 {
+				zeroCount--
+			}
+			sum -= nums[l]
+			l++
 		}
-		l++
-		r = l + 1
-		sum = 0
-		sumZero = 0
 
+		result += r - l + 1
+		r++
 	}
 
 	return result
